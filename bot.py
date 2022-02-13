@@ -13,14 +13,10 @@ def db():
                                 password='5432',
                                 host='localhost',
                                 port='5432',
-                                database='')
+                                database='divan')
         cursor = conn.cursor()
-        insert_query = '''insert into gold (name) values ('zmi');'''
-        cursor.execute(insert_query)
-        conn.commit()
-        print('6 stroke writetted success')
-        cursor.execute('select * from gold')
-        record = cursor.fetchall()
+        cursor.execute('SELECT version()')
+        record =  cursor.fetchall()
     except (Exception, Error) as error:
         print('Error', error)
     finally:
@@ -32,8 +28,11 @@ def db():
 
 @bot.message_handler(commands=['start'])
 def start(message):
+    print('bot started')
     record = db()
-    bot.send_message(message.chat.id, 'Hello')
+    print('bot db')
+    print('rec',record)
+    print('bot reply db')
     bot.send_message(message.chat.id,'Производитель')
 
 bot.polling(none_stop=True)
