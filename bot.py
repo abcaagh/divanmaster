@@ -28,11 +28,11 @@ def db():
 
 @bot.message_handler(commands=['start'])
 def start(message):
-    print('bot started')
+    bot.send_message(message.chat.id,'Bot started')
     record = db()
-    print('bot db')
+    bot.send_message(message.chat.id,'db func called')
     print('rec',record)
-    print('bot reply db')
+    bot.send_message(message.chat.id,'db reply')
     bot.send_message(message.chat.id,'Производитель')
 
 bot.polling(none_stop=True)
