@@ -15,7 +15,9 @@ def db():
                                 port='5432',
                                 database='divan')
         cursor = conn.cursor()
-        cursor.execute('SELECT version()')
+        cursor.execute("INSERT INTO gold (name) values ('name');")
+        cursor.commit()
+        cursor.execute('SELECT * from gold')
         record =  cursor.fetchall()
     except (Exception, Error) as error:
         print('Error', error)
@@ -32,7 +34,7 @@ def start(message):
     record = db()
     bot.send_message(message.chat.id,'db func called')
     print('rec',record)
-    bot.send_message(message.chat.id,'db reply')
+    bot.send_message(message.chat.id,f'db reply, {record}')
     bot.send_message(message.chat.id,'Производитель')
 
 bot.polling(none_stop=True)
