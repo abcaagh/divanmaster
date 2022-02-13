@@ -1,40 +1,22 @@
-import psycopg2
-from psycopg2 import Error
 import telebot
 import settings
-
+from telebot import types
 bot = telebot.TeleBot(settings.TOKEN)
 
-
-def db():
-    record = None
-    try:
-        conn = psycopg2.connect(user='postgres',
-                                password='5432',
-                                host='localhost',
-                                port='5432',
-                                database='divan')
-        cursor = conn.cursor()
-        cursor.execute("INSERT INTO gold (name) values ('name');")
-        conn.commit()
-        cursor.execute('SELECT * from gold')
-        record =  cursor.fetchall()
-    except (Exception, Error) as error:
-        print('Error', error)
-    finally:
-        if conn:
-            cursor.close()
-            conn.close()
-            print('Connection close')
-    return record
-
-@bot.message_handler(commands=['start'])
+bot.message_handler(commands=['start'])
 def start(message):
-    bot.send_message(message.chat.id,'Bot started')
-    record = db()
-    bot.send_message(message.chat.id,'db func called')
-    print('rec',record)
-    bot.send_message(message.chat.id,f'db reply, {record}')
-    bot.send_message(message.chat.id,'Производитель')
+    bot.send_message(message.chat.id, 'Welcome!')
+    bot.send_message(message.chat.id, 'Click, /action')
+    actions(message)
 
-bot.polling(none_stop=True)
+def actions(message):
+    markup = types.InlineKeyboardMarkup()
+    search_goods = types.InlineKeyboardButton(text="Поиск товара",callback_data="search_goods")
+    add_goods = types.InlineKeyboardButton(text="Добавление товара", callback_data="add_goods")
+    delete_goods = types.InlineKeyboardButton(text="Удаление товара",callback_data="delete_goods")
+    markup.add(search_goods,add_goods,delete_goods)
+
+    bot.send_message(message.chat.id,'Что вы хотите!?',reply_markup=markup)
+
+
+bot.infinity_polling()
