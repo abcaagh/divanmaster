@@ -16,7 +16,7 @@ def db():
                                 database='divan')
         cursor = conn.cursor()
         cursor.execute("INSERT INTO gold (name) values ('name');")
-        cursor.commit()
+        conn.commit()
         cursor.execute('SELECT * from gold')
         record =  cursor.fetchall()
     except (Exception, Error) as error:
